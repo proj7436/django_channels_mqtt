@@ -1,0 +1,27 @@
+.w-100 {
+  width: 100%;
+}
+.ovf-anw {
+  overflow-wrap: anywhere;
+}
+.w-100 {
+  width: 100%;
+}
+.ovf-anw {
+  overflow-wrap: anywhere;
+}
+p {
+  text-indent: 20px;
+}
+.border {
+  border: 1px solid black;
+}
+.pd-6 {
+  padding: 6px;
+}
+.mg-6 {
+  margin: 6px;
+}
+.bdr-7 {
+  border-radius: 7px;
+}

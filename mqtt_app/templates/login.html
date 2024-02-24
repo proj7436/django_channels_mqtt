@@ -1,0 +1,37 @@
+{% load static%}
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'mqtt_app/css/style.css'%}" />
+    <link rel="stylesheet" href="{% static 'mqtt_app/css/login.css'%}" />
+  </head>
+  <body>
+    <div class="login-container">
+      <h2>Login</h2>
+      <form class="login-form" action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Username"
+        />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Password"
+        />
+        {% if error_message%}
+        <p style="color: red">{{error_message}}</p>
+        {% endif %}
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </body>
+</html>
