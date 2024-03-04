@@ -1,24 +1,18 @@
 import paho.mqtt.client as mqtt
 
-# Định nghĩa hàm callback khi kết nối thành công với broker MQTT
 def on_connect(client, userdata, flags, rc):
-    print("Connected with result code " + str(rc))
-    # Đăng ký tham gia vào một chủ đề sau khi kết nối thành công
-    client.subscribe("test/topic")
+    print(f"Connected with result code {rc}")
+    client.subscribe("your_topic_here")
 
-# Định nghĩa hàm callback khi nhận được một tin nhắn từ broker MQTT
 def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.payload))
+    print(f"Received message: {msg.payload.decode()}")
 
-# Khởi tạo một client MQTT
-client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
-
-# Thiết lập các hàm callback
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 client.on_connect = on_connect
 client.on_message = on_message
 
-# Kết nối tới broker MQTT
-client.connect("localhost", 1883, 60)
+# Connect to the MQTT broker
+client.connect("mqvnaa01.rogo.com.vn", 31884, 60)
 
-# Lặp vô hạn để giữ kết nối với broker
+# Start the MQTT loop
 client.loop_forever()

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%-9eysoxyic3+sruh3n3@$@e6u5xl855&!(49_4q4p5)g!_+c)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://mqtt-protocol-365.onrender.com"]
@@ -93,6 +93,16 @@ CHANNEL_LAYERS = {
     },
 }
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [("redis://localhost:6379")],
+#         },
+#     },
+# }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -137,9 +147,9 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-MQTT_SERVER = 'broker.emqx.io'
-MQTT_PORT = 1883
-MQTT_KEEPALIVE = 60
+
+
+
 MQTT_USER = ''
 MQTT_PASSWORD = ''
 

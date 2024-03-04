@@ -1,20 +1,30 @@
 from channels.generic.websocket import WebsocketConsumer
 import json
 import paho.mqtt.client as mqtt
-from django.conf import settings
 from django.core.cache import  cache
+from django.conf import settings
+import ssl 
+import socket
+
+
+MQTT_SERVER = ''
+MQTT_PORT = 0
+MQTT_KEEPALIVE = 60
+
 
 class Boardcart(WebsocketConsumer):
     def connect(self):
+        global on_connect, on_message
         self.accept()
 
-        print('have connection')
         def on_connect(mqtt_client, userdata, flags, rc):
+
             if rc == 0:
-                print("Connected")
+            
+                print(f"Connected successfully to MQTT broker {rc}")
 
                 #main topic
-                mqtt_client.subscribe('django-24092006')
+                mqtt_client.subscribe('django-24092006')    
                 topics = cache.get('all_topics', [])
                 if topics:
 
@@ -31,6 +41,7 @@ class Boardcart(WebsocketConsumer):
                 hex_str = msg.payload.decode("utf-8")
             except UnicodeDecodeError:
                 hex_str = msg.payload.hex()
+                print(hex_str)
             self.send(text_data = json.dumps({
                 'status':'log',
                 'topic':msg.topic,
@@ -41,21 +52,14 @@ class Boardcart(WebsocketConsumer):
          
 
 
-        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
 
+        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
         self.client.on_connect = on_connect
         self.client.on_message = on_message
-        # client.username_pw_set(settings.MQTT_USER, settings.MQTT_PASSWORD)
-        self.client.connect(
-            host=settings.MQTT_SERVER,
-            port=settings.MQTT_PORT,
-            keepalive=settings.MQTT_KEEPALIVE
-        )
-        
 
-        self.client.loop_start()
 
     def disconnect(self, code):
+        cache.set('all_topics', [])
         self.close()
 
 
@@ -79,3 +83,49 @@ class Boardcart(WebsocketConsumer):
                     }))
             except:
                 pass
+
+        elif data['status'] == 'connect_mqtt_server':
+            host = data['host']
+            port = data['port']
+
+            if not host.startswith('mqtt'):
+                return self.send(json.dumps({
+                   'status':'connect_fail'
+                }))
+            try:
+                self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+                self.client.on_connect = on_connect
+                self.client.on_message = on_message
+                if host.startswith('mqtts://'):
+                    self.client.tls_set(cert_reqs=ssl.CERT_NONE)
+                MQTT_SERVER = host.split('//')[1]
+                MQTT_PORT = int(port)
+                self.client.connect(
+                    host=MQTT_SERVER,
+                    port=MQTT_PORT,
+                    keepalive=MQTT_KEEPALIVE
+                )
+                self.client.loop_start()
+           
+
+            except ValueError:
+                 return self.send(json.dumps({
+                    'status':'connect_fail'
+                }))
+            except socket.timeout:
+                return self.send(json.dumps({
+                    'status':'connect_fail'
+                }))
+       
+            cache.set('all_topics', [])
+            return self.send(json.dumps({
+                    'status':'connect_success'
+                }))
+
+        elif data['status'] == 'disconnect_mqtt_server':
+            self.client.loop_stop()
+            self.client.disconnect()
+            cache.set('all_topics', [])
+            return self.send(json.dumps({
+                'status':'disconnect_success'
+            }))

@@ -1,3 +1,68 @@
+function change_button(status) {
+  if (status == "disconnect") {
+    const button = document.querySelector(".button-disconnect");
+    button.textContent = "CONNECT";
+    button.classList.remove("button-disconnect");
+    button.classList.add("button-connect");
+    button.classList.remove("button-non");
+  } else if (status == "connect") {
+    const button = document.querySelector(".button-connect");
+    button.textContent = "DISCONNECT";
+    button.classList.remove("button-connect");
+    button.classList.add("button-disconnect");
+    button.classList.remove("button-non");
+  } else {
+    const button = document.querySelector(".button-connect");
+    button.textContent = "CONNECT";
+    button.classList.remove("button-disconnect");
+    button.classList.add("button-connect");
+    button.classList.remove("button-non");
+  }
+}
+
+function change_button_loading(status) {
+  if (status == "disconnect") {
+    const button = document.querySelector(".button-disconnect");
+    button.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin-pulse fa-xl"></i>';
+    button.classList.add("button-non");
+  } else {
+    const button = document.querySelector(".button-connect");
+    button.innerHTML =
+      '<i class="fa-solid fa-spinner fa-spin-pulse fa-xl"></i>';
+    button.classList.add("button-non");
+  }
+}
+var status_connect_mqtt_server = false;
+document.querySelector("#mqtt_serverForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  //chua connect thi se connect
+  if (!status_connect_mqtt_server) {
+    const host = document.querySelector("#host");
+    const port = document.querySelector("#port");
+    if (host.value == "" || port.value == "") {
+      return;
+    }
+    status_connect_mqtt_server = true;
+    change_button_loading("connect");
+    return ws.send(
+      JSON.stringify({
+        status: "connect_mqtt_server",
+        host: host.value,
+        port: port.value,
+      })
+    );
+  }
+  status_connect_mqtt_server = false;
+  change_button_loading("disconnect");
+  return ws.send(
+    JSON.stringify({
+      status: "disconnect_mqtt_server",
+    })
+  );
+});
+
 function add_divice(topic) {
   var ul = document.querySelector(".container_divice ul");
   ul.insertAdjacentHTML(
@@ -21,6 +86,8 @@ async function getTopics() {
     }
     const data = await response.json();
     if (data) {
+      var ul = document.querySelector(".container_divice ul");
+      ul.innerHTML = "";
       for (const item of data["all_topics"]) {
         add_divice(item);
       }
@@ -43,7 +110,6 @@ const ws = new WebSocket(`${protocol}${window.location.host}/ws/connect`);
 ws.onmessage = (event) => {
   try {
     const data = JSON.parse(event.data); // Parse JSON data
-    console.log(data);
 
     if (data.status == "log") {
       add_log(data.topic, data.content_hex, data.qos);
@@ -53,6 +119,29 @@ ws.onmessage = (event) => {
       const topic = document.getElementById("topic");
       add_divice(topic.value);
       document.getElementById("topic").value = "";
+    }
+    if (data.status == "connect_success") {
+      change_button("connect");
+      // noti
+      showNotification("Connected!", true);
+      var ul = document.querySelector(".container_log ul");
+      ul.innerHTML = "";
+      getTopics();
+    }
+    if (data.status == "disconnect_success") {
+      change_button("disconnect");
+      showNotification("Disconnected!", false);
+      var ul = document.querySelector(".container_log ul");
+      ul.innerHTML = "";
+      getTopics();
+    }
+    if (data.status == "connect_fail") {
+      status_connect_mqtt_server = false;
+      change_button("fail");
+      showNotification("Connection failed!", false);
+      var ul = document.querySelector(".container_log ul");
+      ul.innerHTML = "";
+      getTopics();
     }
   } catch (error) {
     console.error(error);
@@ -65,6 +154,10 @@ document
     event.preventDefault();
     const topic = document.getElementById("topic");
 
+    if (!status_connect_mqtt_server) {
+      showNotification("Not connected to MQTT server", false);
+      return;
+    }
     if (topic.value == "") {
       return;
     }
@@ -76,3 +169,33 @@ document
       })
     );
   });
+
+function showNotification(msg, status) {
+  var notification = document.getElementById("notification");
+  var notification_msg = document.getElementById("notification-message");
+  notification_msg.textContent = msg;
+  if (status) {
+    notification.classList.remove("noti-fail");
+    notification.classList.add("noti-success");
+  } else {
+    notification.classList.remove("noti-success");
+    notification.classList.add("noti-fail");
+  }
+
+  notification.style.display = "block"; // Hiển thị thông báo
+  setTimeout(function () {
+    notification.style.display = "none"; // Ẩn thông báo sau 2 giây
+  }, 3000);
+}
+
+setInterval(() => {
+  const host = document.querySelector("#host");
+  const port = document.querySelector("#port");
+  if (status_connect_mqtt_server) {
+    host.readOnly = true;
+    port.readOnly = true;
+  } else {
+    host.readOnly = false;
+    port.readOnly = false;
+  }
+}, 100);

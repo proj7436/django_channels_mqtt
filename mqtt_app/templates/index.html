@@ -10,6 +10,35 @@
     <link rel="stylesheet" href="{% static 'mqtt_app/css/style.css'%}" />
   </head>
   <body>
+    <div class="notification" id="notification">
+      <span id="notification-message">noti</span>
+    </div>
+    <div class="info border pd-6 mg-6 bdr-7 color-container">
+      <h2>MQTT Server</h2>
+      <form id="mqtt_serverForm" class="flex-col">
+        <div class="input_topic flex-col">
+          <label for="host">Host:</label>
+          <input
+            class="pd-6 input-style"
+            type="text"
+            id="host"
+            placeholder="mqtts://broker.emqx.io"
+          />
+
+          <label for="port">Port:</label>
+          <input
+            class="pd-6 input-style"
+            type="text"
+            id="port"
+            placeholder="1883"
+          />
+        </div>
+        <button type="submit" class="button-connect bdr-6 pd-6 mg-6">
+          CONNECT
+        </button>
+      </form>
+    </div>
+
     <div class="info border pd-6 mg-6 bdr-7 color-container">
       <h2>Add Device</h2>
       <form id="deviceForm" class="flex-col">
@@ -41,4 +70,8 @@
     </div>
     <script src="{% static 'mqtt_app/js/main.js'%}"></script>
   </body>
+  <script
+    src="https://kit.fontawesome.com/0d2d64e695.js"
+    crossorigin="anonymous"
+  ></script>
 </html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .mqtt_utils import client as mqtt_client
+from .consumers import Boardcart
 from django.contrib.auth import authenticate
 import json
 from django.contrib.auth.decorators import login_required
@@ -12,10 +12,6 @@ from django.views import View
 
 USERNAME =  'admin_acc'
 PASSWORD =  'admin365!@'
-def publish_message(request):
-    request_data = json.loads(request.body)
-    rc, mid = mqtt_client.publish(request_data['topic'], request_data['msg'])
-    return JsonResponse({'code': rc})
 
 
 

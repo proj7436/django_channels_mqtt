@@ -37,6 +37,7 @@ var status_connect_mqtt_server = false;
 document.querySelector("#mqtt_serverForm").addEventListener("submit", (e) => {
   e.preventDefault();
 
+  console.log(status_connect_mqtt_server);
   //chua connect thi se connect
   if (!status_connect_mqtt_server) {
     const host = document.querySelector("#host");
@@ -110,6 +111,7 @@ const ws = new WebSocket(`${protocol}${window.location.host}/ws/connect`);
 ws.onmessage = (event) => {
   try {
     const data = JSON.parse(event.data); // Parse JSON data
+    console.log(data);
 
     if (data.status == "log") {
       add_log(data.topic, data.content_hex, data.qos);

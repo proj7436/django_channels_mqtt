@@ -38,12 +38,31 @@ body {
 .w-100px {
   width: 100px;
 }
-
+.button-connect {
+  width: 100%;
+  cursor: pointer;
+  color: white;
+  background-color: #27b060;
+}
+.button-disconnect {
+  width: 100%;
+  cursor: pointer;
+  color: white;
+  background-color: #cb1f1f;
+}
 .button-style {
   width: 100%;
   cursor: pointer;
   color: white;
   background-color: #1877f2;
+}
+.noti-success {
+  background-color: #27b060;
+  color: white;
+}
+.noti-fail {
+  background-color: #cb1f1f;
+  color: white;
 }
 .button-style:hover {
   background-color: #1b64c4;
@@ -68,4 +87,44 @@ body {
 .input-style {
   background-color: #2b2b40;
   color: white;
+  margin-bottom: 10px;
+}
+
+.notification {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  border: none;
+  padding: 15px;
+  border-radius: 5px;
+  display: none; /* Ban đầu ẩn thông báo */
+  animation: slideIn 0.5s ease forwards, slideOut 0.5s ease 2s forwards;
+}
+
+/* Hiệu ứng lướt xuống */
+@keyframes slideIn {
+  from {
+    top: -100px;
+    opacity: 0;
+  }
+  to {
+    top: 10px;
+    opacity: 1;
+  }
+}
+
+/* Hiệu ứng ẩn đi */
+@keyframes slideOut {
+  from {
+    top: 10px;
+    opacity: 1;
+  }
+  to {
+    top: -100px;
+    opacity: 0;
+  }
+}
+
+.button-non {
+  pointer-events: none;
 }
