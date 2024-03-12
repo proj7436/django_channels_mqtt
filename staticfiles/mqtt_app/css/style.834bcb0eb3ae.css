@@ -13,13 +13,6 @@
 p {
   text-indent: 20px;
 }
-.relative {
-  position: relative;
-}
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
 .border {
   border: 1px solid black;
 }
@@ -80,7 +73,6 @@ body {
   margin: 6px;
   border-radius: 5px;
   color: #0b1727;
-  transition: background-color 0.1s ease-in-out;
 }
 .bdr-6 {
   border-radius: 6px;
@@ -139,19 +131,4 @@ body {
 .container_log {
   max-height: 300px;
   overflow-y: auto;
-}
-
-.container-device-log:hover {
-  background-color: #9bb2a8;
-}
-.close_divice {
-  color: #d2301e;
-  position: absolute;
-  right: 0;
-  bottom: 13%;
-  padding: 10px;
-}
-.close_divice:hover {
-  cursor: pointer;
-  opacity: 0.7;
 }

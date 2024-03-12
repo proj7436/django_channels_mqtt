@@ -67,20 +67,15 @@ function add_divice(topic) {
   var ul = document.querySelector(".container_divice ul");
   ul.insertAdjacentHTML(
     "afterbegin",
-    `<div class="container-device-log relative">
-    <li class="width:80%">${topic}</li>
-    <i onclick="removeDevice('${topic}')" class="fa-solid fa-rectangle-xmark fa-lg close_divice" style="color: #d2301e; position: absolute; right:0;"></i>
-    </div>
-    `
+    `<li class='container-device-log' >${topic}</li>`
   );
 }
 function add_log(topic, content_hex, qos) {
-  const time = getTime_H_M_S_now();
   var ul = document.querySelector(".container_log ul");
   ul.insertAdjacentHTML(
     "afterbegin",
     `<li class="container-device-log flex-col" style="cursor: pointer;">
-    <p value="${time}"></p>
+    <p value="thanhdat">8 giây trước</p>
     <a target="_blank" style="text-decoration: none;" href="/data/${topic}/${qos}/${content_hex}/" >Topic: ${topic} QoS: ${qos} ${content_hex}</a></li>`
   );
 }
@@ -120,7 +115,6 @@ ws.onmessage = (event) => {
 
     if (data.status == "log") {
       add_log(data.topic, data.content_hex, data.qos);
-      playSoundNoti();
     }
     if (data.status == "topic_exist") {
     } else if (data.status == "created_successfully") {
@@ -149,9 +143,6 @@ ws.onmessage = (event) => {
       showNotification("Connection failed!", false);
       var ul = document.querySelector(".container_log ul");
       ul.innerHTML = "";
-      getTopics();
-    }
-    if (data.status == "remove_topic_success") {
       getTopics();
     }
   } catch (error) {
@@ -210,19 +201,3 @@ setInterval(() => {
     port.readOnly = false;
   }
 }, 100);
-
-// Phát âm thanh
-var audio = document.getElementById("notificationSound");
-audio.volume = 0.3;
-function playSoundNoti() {
-  audio.play();
-}
-
-function removeDevice(topic) {
-  ws.send(
-    JSON.stringify({
-      status: "remove_topic",
-      topic: topic,
-    })
-  );
-}

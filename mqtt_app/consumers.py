@@ -67,8 +67,7 @@ class Boardcart(WebsocketConsumer):
         data = json.loads(text_data)
        
         if data['status'] == 'create_topic':
-            if "+" in data['topic'] or "#" in data['topic']:
-                return 
+    
             all_topic_cache = cache.get('all_topics')
             if data['topic'] in all_topic_cache:
                 return self.send(text_data = json.dumps({
@@ -128,4 +127,17 @@ class Boardcart(WebsocketConsumer):
             cache.set('all_topics', [])
             return self.send(json.dumps({
                 'status':'disconnect_success'
+            }))
+        
+        elif data['status'] == 'remove_topic':
+            topic = data['topic']
+            data_cache = cache.get('all_topics')
+            data_cache.remove(topic)
+
+            cache.set("all_topics",data_cache)
+
+            self.client.unsubscribe(topic)
+
+            return self.send(json.dumps({
+                'status':'remove_topic_success',
             }))
