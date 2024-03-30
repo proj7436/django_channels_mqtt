@@ -155,9 +155,88 @@ def run_python_program(topic, qos, hex_str):
 
 def show_data(request, topic, qos, content_hex):
     
-    print(topic)
-    print(content_hex)
-    print(qos)
-    context = run_python_program(topic, qos, content_hex)
-    print(context)
+    data = run_python_program(topic, qos, content_hex)
+
+    header_result = data["Header_Result"]
+
+    #2 item dưới divice status
+    value_divice_status_1 = header_result[1].split(":")[1]
+    value_divice_status_2 = header_result[2].split(":")[1]
+
+    #2 item dưới SectionExtras
+
+    value_SectionExtras_1 = header_result[4].split(":")[1]
+    value_SectionExtras_2 = header_result[5].split(":")[1]
+
+    # 6 item dưới MsgData
+
+    value_MsgData_1 = header_result[7].split(":")[1]
+    value_MsgData_2 = header_result[8].split(":")[1]
+    value_MsgData_3 = header_result[9].split(":")[1]
+    value_MsgData_4 = header_result[10].split(":")[1]
+    value_MsgData_5 = header_result[11].split(":")[1]
+    value_MsgData_6 = header_result[12].split(":")[1]
+    
+    # value blockVersion 
+
+    value_blockVersion = header_result[14].split(":")[1]
+    length_blockVersion = header_result[15].split(":")[1]
+    data_blockVersion = header_result[16].split(":")[1]
+
+    # value blockDataLong (Up time)
+
+    value_blockDataLong = header_result[17].split(":")[1]
+    length_blockDataLong = header_result[18].split(":")[1]
+    data_blockDataLong = header_result[19].split(":")[1]
+
+    #value blockDataLong (Last time activate)
+
+    value_blockDataLong_1 = header_result[20].split(":")[1]
+    length_blockDataLong_1 = header_result[21].split(":")[1]
+    data_blockDataLong_1 = header_result[22].split(":")[1]
+
+    #blockProtocolExtInfo
+
+    value_blockProtocolExtInfo = header_result[23].split(":")[1]
+    length_blockProtocolExtInfo = header_result[24].split(":")[1]
+    data_blockProtocolExtInfo = header_result[25].split(":")[1]
+
+    #blockRamRomMemory
+    value_blockRamRomMemory = header_result[26].split(":")[1]
+    length_blockRamRomMemory = header_result[27].split(":")[1]
+    data_blockRamRomMemory = header_result[28].split(":")[1]
+
+    # value
+    
+    context = {
+        "topic":topic,
+        "qos":qos,
+        "hex":content_hex,
+        "value_divice_status_1" :value_divice_status_1,
+        "value_divice_status_2" :value_divice_status_2,
+        "value_SectionExtras_1" :value_SectionExtras_1,
+        "value_SectionExtras_2" :value_SectionExtras_2,
+        "value_MsgData_1" :value_MsgData_1,
+        "value_MsgData_2" :value_MsgData_2,
+        "value_MsgData_3" :value_MsgData_3,
+        "value_MsgData_4" :value_MsgData_4,
+        "value_MsgData_5" :value_MsgData_5,
+        "value_MsgData_6" :value_MsgData_6,
+        "value_blockVersion" :value_blockVersion,
+        "length_blockVersion" :length_blockVersion,
+        "data_blockVersion" :data_blockVersion,
+        "value_blockDataLong" :value_blockDataLong,
+        "length_blockDataLong" :length_blockDataLong,
+        "data_blockDataLong" :data_blockDataLong,
+        "value_blockDataLong_1" :value_blockDataLong_1,
+        "length_blockDataLong_1" :length_blockDataLong_1,
+        "data_blockDataLong_1" :data_blockDataLong_1,
+        "value_blockProtocolExtInfo" :value_blockProtocolExtInfo,
+        "length_blockProtocolExtInfo" :length_blockProtocolExtInfo,
+        "data_blockProtocolExtInfo" :data_blockProtocolExtInfo,
+        "value_blockRamRomMemory" :value_blockRamRomMemory,
+        "length_blockRamRomMemory" :length_blockRamRomMemory,
+        "data_blockRamRomMemory" :data_blockRamRomMemory,
+
+    }
     return render(request, "show_data.html", context={'data':context})
