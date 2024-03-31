@@ -1,5 +1,12 @@
 
-
+function getTime_H_M_S_now() {
+    const currentTime = new Date();
+    hours = currentTime.getHours();
+    minutes = currentTime.getMinutes();
+    seconds = currentTime.getSeconds();
+  
+    return `${hours}:${minutes}:${seconds}`;
+  }
 function change_button(status) {
 
   if (status == "disconnect") {

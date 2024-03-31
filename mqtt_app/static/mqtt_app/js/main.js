@@ -1,4 +1,7 @@
+
+
 function change_button(status) {
+
   if (status == "disconnect") {
     const button = document.querySelector(".button-disconnect");
     button.textContent = "CONNECT";
@@ -75,14 +78,30 @@ function add_divice(topic) {
   );
 }
 function add_log(topic, content_hex, qos) {
-  const time = getTime_H_M_S_now();
-  var ul = document.querySelector(".container_log ul");
-  ul.insertAdjacentHTML(
-    "afterbegin",
-    `<li class="container-device-log flex-col" style="cursor: pointer;">
-    <p value="${time}"></p>
-    <a target="_blank" style="text-decoration: none;" href="/data/${topic}/${qos}/${content_hex}/" >Topic: ${topic} QoS: ${qos} ${content_hex}</a></li>`
-  );
+    const time = getTime_H_M_S_now();
+    var parent = document.querySelector(".container_log ");
+    var log_entry = document.createElement("div");
+    log_entry.classList.add("log-entry");
+  
+    // Tạo và gán nội dung cho từng phần tử con của log_entry
+    const time_child = `<div class="log-time"><p value="${time}"></p></div>`;
+    const topic_child = `<div class="log-topic">Topic: ${topic} QoS: ${qos}</div>`;
+    const content_child = `<div class="log-content">${content_hex}</div>`;
+  
+    // Gán nội dung HTML cho log_entry
+    log_entry.innerHTML = time_child + topic_child + content_child;
+  
+    if (parent.firstChild) {
+        parent.insertBefore(log_entry, parent.firstChild);
+      } else {
+        parent.appendChild(log_entry);
+      }
+//   log_entry.insertAdjacentHTML(
+//     "afterbegin",
+//     `<li class="container-device-log flex-col" style="cursor: pointer;">
+//     <p value="${time}"></p>
+//     <a target="_blank" style="text-decoration: none;" href="/data/${topic}/${qos}/${content_hex}/" >Topic: ${topic} QoS: ${qos} ${content_hex}</a></li>`
+//   );
 }
 // get dữ liệu thiết bị
 async function getTopics() {
@@ -132,14 +151,14 @@ ws.onmessage = (event) => {
       change_button("connect");
       // noti
       showNotification("Connected!", true);
-      var ul = document.querySelector(".container_log ul");
+      var ul = document.querySelector(".container_log ");
       ul.innerHTML = "";
       getTopics();
     }
     if (data.status == "disconnect_success") {
       change_button("disconnect");
       showNotification("Disconnected!", false);
-      var ul = document.querySelector(".container_log ul");
+      var ul = document.querySelector(".container_log ");
       ul.innerHTML = "";
       getTopics();
     }
@@ -147,7 +166,7 @@ ws.onmessage = (event) => {
       status_connect_mqtt_server = false;
       change_button("fail");
       showNotification("Connection failed!", false);
-      var ul = document.querySelector(".container_log ul");
+      var ul = document.querySelector(".container_log ");
       ul.innerHTML = "";
       getTopics();
     }
@@ -226,3 +245,71 @@ function removeDevice(topic) {
     })
   );
 }
+function timeApart(hours_last, minutes_last, seconds_last) {
+  const currentTime = new Date();
+  const hours_now = currentTime.getHours();
+  const minutes_now = currentTime.getMinutes();
+  const seconds_now = currentTime.getSeconds();
+
+  let hour_apart = hours_now - hours_last;
+  let minute_apart = minutes_now - minutes_last;
+  let second_apart = seconds_now - seconds_last;
+
+  // Xử lý trường hợp giây âm
+  if (second_apart < 0) {
+    minute_apart -= 1;
+    second_apart += 60; // Chuyển đổi giây âm thành dương
+  }
+  // Xử lý trường hợp phút âm
+  if (minute_apart < 0) {
+    hour_apart -= 1;
+    minute_apart += 60; // Chuyển đổi phút âm thành dương
+  }
+  // Xử lý trường hợp giờ âm
+  if (hour_apart < 0) {
+    hour_apart += 24; // Chuyển đổi giờ âm thành dương
+  }
+
+  if (hour_apart === 0 && minute_apart === 0) {
+    return `${second_apart} giây trước`;
+  }
+  if (hour_apart === 0 && minute_apart !== 0) {
+    return `${minute_apart} phút trước`;
+  }
+  if (hour_apart !== 0) {
+    return `${hour_apart} giờ trước`;
+  }
+}
+// Cập nhật thời gian hiện tại
+
+
+
+function print_time_apart() {
+  // Lọc tất cả các thẻ <p> trong danh sách
+  var pTags = document.querySelectorAll(
+    ".container_log p"
+  );
+
+  // Duyệt qua từng thẻ <p>
+  pTags.forEach(function (pTag) {
+    // Lấy giá trị từ thuộc tính value của thẻ <p>
+    var timeValue = pTag.getAttribute("value");
+    // Kiểm tra xem giá trị có tồn tại không
+    if (timeValue) {
+      // Tách giờ, phút và giây từ giá trị
+      var timeParts = timeValue.split(":");
+      var hours = parseInt(timeParts[0]);
+      var minutes = parseInt(timeParts[1]);
+      var seconds = parseInt(timeParts[2]);
+
+      // Gọi hàm get_time với các giá trị thời gian tách được
+      var result = timeApart(hours, minutes, seconds);
+
+      // Gán chuỗi kết quả cho thuộc tính textContent của thẻ <p>
+      pTag.textContent = result;
+    }
+  });
+}
+setInterval(function () {
+  print_time_apart();
+}, 2000);

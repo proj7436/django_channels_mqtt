@@ -1,7 +1,4 @@
-
-
 function change_button(status) {
-
   if (status == "disconnect") {
     const button = document.querySelector(".button-disconnect");
     button.textContent = "CONNECT";
@@ -282,7 +279,14 @@ function timeApart(hours_last, minutes_last, seconds_last) {
 }
 // Cập nhật thời gian hiện tại
 
+function getTime_H_M_S_now() {
+  const currentTime = new Date();
+  hours = currentTime.getHours();
+  minutes = currentTime.getMinutes();
+  seconds = currentTime.getSeconds();
 
+  return `${hours}:${minutes}:${seconds}`;
+}
 
 function print_time_apart() {
   // Lọc tất cả các thẻ <p> trong danh sách

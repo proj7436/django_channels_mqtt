@@ -3,212 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Data Visualization</title>
+<title>Log Viewer</title>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-    }
-
-    .container {
-        max-width: 800px;
-        margin: 20px auto;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    th, td {
-        padding: 8px 12px;
-        border-bottom: 3px solid #000000;
-        text-align: left;
-    }
-
-    .sub-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .sub-table th, .sub-table td {
-        padding: 6px 10px;
-        border-bottom: 1px solid #ccc;
-        text-align: left;
-    }
-
-    .sub-table td {
-        padding-left: 20px;
-        word-wrap: break-word;
-        max-width: 100px; /* Điều chỉnh kích thước max-width tùy theo nhu cầu */
-    }
-    .indam {
-        text-shadow: 1px 0px 0px black;
-    }
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+  }
+  .log-entry {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  .log-time {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  .log-topic {
+    color: #555;
+    margin-bottom: 5px;
+  }
+  .log-content {
+    white-space: pre-wrap;
+    font-family: monospace;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
 </style>
 </head>
 <body>
-<div class="container">
-    <table>
-        <tr>
-            <th colspan="2">DATA ANALYSIS</th>
-        </tr>
-   
-        <tr>
-            <td>Device info</td>
-            <td>
-                <table class="sub-table">
-                    <tr>
-                        <td>Topic</td>
-                        <td>mqvnaa01/FPT/usr/txBcki1rdAWrMsjyoDzVVptzCn63/rpt</td>
-                    </tr>
-                    <tr>
-                        <td>QoS</td>
-                        <td>0</td>
-                    </tr>
-                    <tr>
-                        <td>Hex_Str</td>
-                        <td>0d04f00000be980000110c64dae6894986e5a2ab1688ad7107312e312e302e300708000000000000000507080000000066082f4f73060401000000002a0e4c00000001030000003f00000000</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>Device status</td>
-            <td>
-                <table class="sub-table">
-                    <tr>
-                        <td>Device (NOTIFY_MSG)</td>
-                        <td>0d</td>
-                    </tr>
-                    <tr>
-                        <td>Msg_Cmd_Section</td>
-                        <td>04</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>SectionExtras</td>
-            <td>
-                <table class="sub-table">
-                    <tr>
-                        <td>DEVICE STATUS</td>
-                        <td>f0</td>
-                    </tr>
-                    <tr>
-                        <td>msg_cmd_section_extra</td>
-                        <td>00</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>MsgData</td>
-            <td>
-                <table class="sub-table">
-                    <tr>
-                        <td>None</td>
-                        <td>00</td>
-                    </tr>
-                    <tr>
-                        <td>TCP_UDP Port</td>
-                        <td>dbb0</td>
-                    </tr>
-                    <tr>
-                        <td>Tid</td>
-                        <td>0040</td>
-                    </tr>
-                    <tr>
-                        <td>sender_from</td>
-                        <td>11</td>
-                    </tr>
-                    <tr>
-                        <td>sender_size</td>
-                        <td>0c</td>
-                    </tr>
-                    <tr>
-                        <td>sender_bytes_as sender_size</td>
-                        <td>65a28f107505f2a5fc7516e7</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>Block</td>
-            <td>
-                <table class="sub-table">
-                    <tr>
-                        <td class="indam">blockVersion (Firmware version)</td>
-                        <td>01</td>
-                    </tr>
-                    <tr>
-                        <td>Length</td>
-                        <td>0c</td>
-                    </tr>
-                    <tr>
-                        <td>Data</td>
-                        <td>659a1cb75861dc7a682188cd</td>
-                    </tr>
-                    <tr>
-                        <td class="indam">blockDataLong (Up time)</td>
-                        <td>20</td>
-                    </tr>
-                    <tr>
-                        <td>Length</td>
-                        <td>06</td>
-                    </tr>
-                    <tr>
-                        <td>Data</td>
-                        <td>a0764eb158a4</td>
-                    </tr>
-                    <tr>
-                        <td class="indam">blockDataLong (Last time activate)</td>
-                        <td>01</td>
-                    </tr>
-                    <tr>
-                        <td>Length</td>
-                        <td>0c</td>
-                    </tr>
-                    <tr>
-                        <td>Data</td>
-                        <td>65a28f107505f2a5fc7516e7</td>
-                    </tr>
-                    <tr>
-                        <td class="indam">blockProtocolExtInfo</td>
-                        <td>41</td>
-                    </tr>
-                    <tr>
-                        <td>Length</td>
-                        <td>04</td>
-                    </tr>
-                    <tr>
-                        <td>Data</td>
-                        <td>00030001</td>
-                    </tr>
-                    <tr>
-                        <td class="indam">blockRamRomMemory</td>
-                        <td>80</td>
-                    </tr>
-                    <tr>
-                        <td>Length</td>
-                        <td>04</td>
-                    </tr>
-                    <tr>
-                        <td>Data</td>
-                        <td>00010000</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
-
-</div>
+  <div class="log-entry">
+    <div class="log-time">44 giây trước</div>
+    <div class="log-topic">Topic: mqvnaa01/FPT/usr/SRdpgGceRqQCbnqeMGxR5Xu12jr2/rpt QoS: 0</div>
+    <div class="log-content">0d04f0000061bc0000110c658b8c4e5861dc7a680975f47107312e312e302e300708000000000000000a0708000000000000000073060401000000002a0e4900000001030000003f00000000</div>
+  </div>
+  <div class="log-entry">
+    <div class="log-time">1 phút trước</div>
+    <div class="log-topic">Topic: mqvnaa01/FPT/usr/qfjyyQU9jthEyR6wn6oOdMi0VB42/rpt QoS: 0</div>
+    <div class="log-content">0d04f000007b650000110c64fa9513b47243066b7d3ac87107312e312e302e30070800000000000000050708000000000000000073060401000000002a0e4c00000001030000003f00000000</div>
+  </div>
+  <div class="log-entry">
+    <div class="log-time">1 phút trước</div>
+    <div class="log-topic">Topic: mqvnaa01/FPT/usr/WYHq8tTNLkMViI6S0TotBInekDV2/rpt QoS: 0</div>
+    <div class="log-content">0d01060000f8b1006b110c655195a3d8a7cd1c2237b877010c64d5d987a8795d779d8a6fa5200c6055f9755cc8018cfb4399c6010c65a09466ead38ab91b885f73410400a90001800400010000800400110001800400140019800400130004800400120000</div>
+  </div>
 </body>
 </html>
