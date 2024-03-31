@@ -87,9 +87,10 @@ function add_log(topic, content_hex, qos) {
     const time_child = `<div class="log-time"><p value="${time}"></p></div>`;
     const topic_child = `<div class="log-topic">Topic: ${topic} QoS: ${qos}</div>`;
     const content_child = `<div class="log-content">${content_hex}</div>`;
+    const a = `<a href="data/${topic}/${qos}/${content_hex}/" target="_blank" style="opacity: 0;"></a>`;
   
     // Gán nội dung HTML cho log_entry
-    log_entry.innerHTML = time_child + topic_child + content_child;
+    log_entry.innerHTML = time_child + topic_child + content_child+a;
   
     if (parent.firstChild) {
         parent.insertBefore(log_entry, parent.firstChild);
@@ -313,3 +314,5 @@ function print_time_apart() {
 setInterval(function () {
   print_time_apart();
 }, 2000);
+
+

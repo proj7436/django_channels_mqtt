@@ -76,6 +76,7 @@
             <div class="log-time">44 giây trước</div>
             <div class="log-topic">Topic: mqvnaa01/FPT/usr/SRdpgGceRqQCbnqeMGxR5Xu12jr2/rpt QoS: 0</div>
             <div class="log-content">0d04f000010000</div>
+            
         </div> -->
       </div>
     </div>
@@ -95,5 +96,12 @@
   
     return `${hours}:${minutes}:${seconds}`;
   }
+  document.querySelectorAll('.container_log').forEach(function(logEntry) {
+      logEntry.addEventListener('click', function(event) {
+            var a = logEntry.querySelector('a')
+            a.click()
+    });
+});
+
  </script>
 </html>

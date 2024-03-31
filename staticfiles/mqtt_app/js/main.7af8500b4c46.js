@@ -316,3 +316,16 @@ setInterval(function () {
 }, 2000);
 
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Lắng nghe sự kiện click trên các phần tử có class là ".log-entry"
+    document.querySelectorAll('.log-entry').forEach(function(logEntry) {
+        logEntry.addEventListener('click', function(event) {
+            // Kiểm tra xem phần tử con đang được click có phải là thẻ <a> không
+            var link = event.target.closest('a');
+            if (link) {
+                // Kích hoạt sự kiện click trên thẻ <a> ẩn
+                link.click();
+            }
+        });
+    });
+});
