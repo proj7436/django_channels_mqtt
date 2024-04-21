@@ -16,6 +16,8 @@ from channels.routing import URLRouter, ProtocolTypeRouter
 from channels.security.websocket import AllowedHostsOriginValidator
 import mqtt_app.routing
 
+import django
+django.setup()
 os.environ['DJANGO_SETTINGS_MODULE'] = 'core.settings'
 
 application = ProtocolTypeRouter(
