@@ -5,7 +5,8 @@ from django.core.cache import  cache
 from django.conf import settings
 import ssl 
 import socket
-
+from . import models
+from datetime import datetime 
 
 MQTT_SERVER = ''
 MQTT_PORT = 0
@@ -13,6 +14,14 @@ MQTT_KEEPALIVE = 60
 
 
 class Boardcart(WebsocketConsumer):
+    def save_db(self, data):
+        device_name = data['topic']
+        data_response = data['data']
+        time_response = (datetime.now()).strftime('%H:%M:%S - %d/%m/%Y')
+
+        db = models.DataModels.objects.create(device_name = device_name, data_response = data_response, time_response = time_response)
+
+        print('Đã lưu vào db')
     def connect(self):
         global on_connect, on_message
         self.accept()
@@ -25,13 +34,20 @@ class Boardcart(WebsocketConsumer):
 
                 #main topic
                 mqtt_client.subscribe('django-24092006')    
+                mqtt_client.subscribe('+/+/usr/+/rpt')    
+                
                 topics = cache.get('all_topics', [])
+                topics.append("+/+/usr/+/rpt")
+                cache.set('all_topics', topics)
                 if topics:
 
                     for topic in topics:
                         mqtt_client.subscribe(topic)
 
                 #
+                self.send(text_data = json.dumps({
+                    'status':'get-topic'
+                }))
             else:
                 print('Bad connection. Code:', rc)
 
@@ -41,7 +57,9 @@ class Boardcart(WebsocketConsumer):
                 hex_str = msg.payload.decode("utf-8")
             except UnicodeDecodeError:
                 hex_str = msg.payload.hex()
-                print(hex_str)
+
+                
+            
             self.send(text_data = json.dumps({
                 'status':'log',
                 'topic':msg.topic,
@@ -49,6 +67,11 @@ class Boardcart(WebsocketConsumer):
                 'qos':msg.qos
 
             }))
+            data = {
+                'topic':msg.topic,
+                'data':hex_str,
+            }
+            self.save_db(data)
          
 
 

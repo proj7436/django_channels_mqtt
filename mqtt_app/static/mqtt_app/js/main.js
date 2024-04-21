@@ -148,6 +148,9 @@ ws.onmessage = (event) => {
       add_divice(topic.value);
       document.getElementById("topic").value = "";
     }
+        if (data.status == "get-topic") {
+            getTopics()
+        }
     if (data.status == "connect_success") {
       change_button("connect");
       // noti
