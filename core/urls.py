@@ -18,6 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('Thanden365/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('mqtt_app.urls')),
 ]
