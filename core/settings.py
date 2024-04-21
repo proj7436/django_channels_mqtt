@@ -28,7 +28,7 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://data-analyst-365.onrender.com/*"]
+CSRF_TRUSTED_ORIGINS = ["https://mq-data.onrender.com/*"]
 
 # Application definition
 
@@ -88,7 +88,7 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://raw_data_mqtt_user:FKoXWrMvH7GmCNYIyRDMjN7cDvycztFl@dpg-cohpl8f79t8c7385tp6g-a.singapore-postgres.render.com/raw_data_mqtt'
+        default='postgres://raw_data_mqtt_user:FKoXWrMvH7GmCNYIyRDMjN7cDvycztFl@dpg-cohpl8f79t8c7385tp6g-a/raw_data_mqtt'
     )
 }
 CHANNEL_LAYERS = {
