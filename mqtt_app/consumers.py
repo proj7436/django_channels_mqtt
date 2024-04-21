@@ -5,7 +5,6 @@ from django.core.cache import  cache
 from django.conf import settings
 import ssl 
 import socket
-from . import models
 from datetime import datetime 
 
 MQTT_SERVER = ''
@@ -15,6 +14,8 @@ MQTT_KEEPALIVE = 60
 
 class Boardcart(WebsocketConsumer):
     def save_db(self, data):
+        from . import models
+
         device_name = data['topic']
         data_response = data['data']
         time_response = (datetime.now()).strftime('%H:%M:%S - %d/%m/%Y')
