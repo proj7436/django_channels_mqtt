@@ -14,15 +14,15 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-import os
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
-import django
-django.setup()
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-%-9eysoxyic3+sruh3n3@$@e6u5xl855&!(49_4q4p5)g!_+c)'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -83,17 +83,13 @@ ASGI_APPLICATION = 'core.asgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'dpg-cohpl8f79t8c7385tp6g-a',  # Tên máy chủ PostgreSQL
-        'PORT': '5432',                         # Cổng
-        'NAME': 'raw_data_mqtt',                # Tên cơ sở dữ liệu
-        'USER': 'raw_data_mqtt_user',           # Tên người dùng
-        'PASSWORD': 'FKoXWrMvH7GmCNYIyRDMjN7cDvycztFl',            # Mật khẩu
-    }
-}
+import dj_database_url
 
+DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://raw_data_mqtt_user:FKoXWrMvH7GmCNYIyRDMjN7cDvycztFl@dpg-cohpl8f79t8c7385tp6g-a/raw_data_mqtt'
+    )
+}
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
